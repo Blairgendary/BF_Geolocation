@@ -2,12 +2,16 @@
 <html>
     <head>
         <title>Blackfoot History</title>
+        <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
         <link type="text/css" rel="stylesheet" href="css/style.css">
         
     </head>
     <body>
         <p id='geolocation'>finding geoloc...</p>
-        <div id='videoPlayer'></div>
+        <div id='map-container'>
+            <div id='map'></div>
+        </div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-4ef1PYcMo6RC_hIoqKCS2S2Xs-7U1V0"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/script.js"></script>
     </body>

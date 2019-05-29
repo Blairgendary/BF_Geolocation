@@ -8,5 +8,6 @@
         PhoneGap Team
     </author>
     <content src="index.html" />
+    <access Access-Control-Allow-Origin="*" />
     <access origin="*" />
 </widget>
