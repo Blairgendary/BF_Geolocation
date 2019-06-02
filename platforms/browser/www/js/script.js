@@ -1,9 +1,9 @@
-var targetLat = 49.677692;
-var targetLong = -112.860110;
+var targetLat = 49.695491;
+var targetLong = -112.897221;
 var deviceLat;
 var deviceLong;
-var videoVisible = 0;
-var distanceFrom = 0.00014;
+var distanceFrom = 0.00025;
+var marker = 0;
 
 var geoOpt = { 
     maximumAge: 1000,
@@ -14,25 +14,24 @@ var geoOpt = {
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() { 
-    navigator.geolocation.watchPosition(onSuccess, onError, geoOpt);
+    navigator.geolocation.getCurrentPosition(onSuccess, onError, geoOpt);
+    navigator.geolocation.watchPosition(onMapWatchSuccess, onMapError, geoOpt);
 }
 
-function onSuccess(postion) { 
+
+function onSuccess(position) { 
     var element = document.getElementById('geolocation');
-    element.innerHTML = 'Latitude: '           + postion.coords.latitude    + '<br / >' + 
-                        'Longitude: '          + postion.coords.longitude   + '<br / >' +
-                        'Altitude: '           + postion.coords.altitude    + '<br / >' +
-                        'Accuracy: '           + postion.coords.accuracy    + '<br / >' + 
+    element.innerHTML = 'Latitude: '           + position.coords.latitude    + '<br / >' + 
+                        'Longitude: '          + position.coords.longitude   + '<br / >' +
+                        'Altitude: '           + position.coords.altitude    + '<br / >' +
+                        'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
                         'Target Latitude: '    + targetLat                  + '<br / >' +
-                        'Target Longitude: '   + targetLong                 + '<br / >';
+                        'Target Longitude: '   + targetLong                 + '<br / >' ;
     
-                        deviceLat = postion.coords.latitude;
-                        deviceLong = postion.coords.longitude;
+                        deviceLat = position.coords.latitude;
+                        deviceLong = position.coords.longitude;
                         getMap(deviceLat,deviceLong);
-                        if ((deviceLat > targetLat - distanceFrom) && (deviceLat < targetLat + distanceFrom) && (deviceLong < targetLong + distanceFrom) && (deviceLong > targetLong - distanceFrom)) { 
-                        document.location.href = 'pages/player.html';
-                        }
-}   
+}  
 
 function getMap(deviceLat,deviceLong) { 
     
@@ -48,8 +47,9 @@ function getMap(deviceLat,deviceLong) {
     var latLong = new google.maps.LatLng(deviceLat, deviceLong);
     var tlatLong = new google.maps.LatLng(targetLat, targetLong);
 
-    var marker = new google.maps.Marker({
-        position: latLong
+    marker = new google.maps.Marker({
+        position: latLong,
+        icon: 'http://earth.google.com/images/kml-icons/track-directional/track-0.png'
     });
     
     var targetMarker = new google.maps.Marker({
@@ -65,17 +65,30 @@ function getMap(deviceLat,deviceLong) {
 }
 
 var onMapWatchSuccess = function (position) {
-
+    var element = document.getElementById('geolocation');
+    element.innerHTML = 'Latitude: '           + position.coords.latitude    + '<br / >' + 
+                        'Longitude: '          + position.coords.longitude   + '<br / >' +
+                        'Altitude: '           + position.coords.altitude    + '<br / >' +
+                        'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
+                        'Target Latitude: '    + targetLat                  + '<br / >' +
+                        'Target Longitude: '   + targetLong                 + '<br / >' ;
+    
+    
     var updatedLatitude = position.coords.latitude;
     var updatedLongitude = position.coords.longitude;
-
-    if (updatedLatitude != deviceLat && updatedLongitude != deviceLong) {
-
-        deviceLat = updatedLatitude;
-        deviceLong = updatedLongitude;
-
-        getMap(updatedLatitude, updatedLongitude);
-    }
+    deviceLat = updatedLatitude;
+    deviceLong = updatedLongitude;
+    var latLong = new google.maps.LatLng(updatedLatitude, updatedLongitude);
+    marker.setPosition(latLong);
+    
+    var upperBoundLat = targetLat + distanceFrom;
+    var lowerBoundLat = targetLat - distanceFrom;
+    var upperBoundLong = targetLong + distanceFrom;
+    var lowerBoundLong = targetLong - distanceFrom;
+    
+    if ((deviceLat > lowerBoundLat) && (deviceLat < upperBoundLat) && (deviceLong > lowerBoundLong) && (deviceLong < upperBoundLong)) { 
+    location.href = 'pages/player.html'
+    } 
 }
 
 // Error Checking
@@ -92,6 +105,7 @@ function onMapError(error) {
 function watchMapPosition() {
     return navigator.geolocation.watchPosition(onMapWatchSuccess, onMapError, { enableHighAccuracy: true });
 }
+
 
 
 
