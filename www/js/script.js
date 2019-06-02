@@ -1,5 +1,5 @@
-var targetLat = 49.695764;
-var targetLong = -112.895013;
+var targetLat = 49.677692;
+var targetLong = -112.860110;
 var deviceLat;
 var deviceLong;
 var videoVisible = 0;
@@ -14,12 +14,11 @@ var geoOpt = {
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() { 
-    navigator.geolocation.getCurrentPosition(onSuccess, onError, geoOpt);
+    navigator.geolocation.watchPosition(onSuccess, onError, geoOpt);
 }
 
 function onSuccess(postion) { 
     var element = document.getElementById('geolocation');
-    var video = document.getElementById('videoPlayer');
     element.innerHTML = 'Latitude: '           + postion.coords.latitude    + '<br / >' + 
                         'Longitude: '          + postion.coords.longitude   + '<br / >' +
                         'Altitude: '           + postion.coords.altitude    + '<br / >' +
@@ -29,21 +28,9 @@ function onSuccess(postion) {
     
                         deviceLat = postion.coords.latitude;
                         deviceLong = postion.coords.longitude;
-                        //targetLat = deviceLat;
-                        //targetLong = deviceLong;
                         getMap(deviceLat,deviceLong);
-    
-    
-                        if (((deviceLat < targetLat + distanceFrom) && (deviceLat > targetLat - distanceFrom)) && ((deviceLong > targetLong - distanceFrom) && (deviceLong < targetLong + distanceFrom))) { 
-                            element.innerHTML = "";
-                            if (videoVisible == false) { 
-                                document.location.href = 'pages/player.html';
-                                //element.innerHTML = 'You have found the TARGET'; 
-                                videoVisible = true;
-                            }
-                        } else { 
-                        videoVisible = false;
-                        video.innerHTML = "";
+                        if ((deviceLat > targetLat - distanceFrom) && (deviceLat < targetLat + distanceFrom) && (deviceLong < targetLong + distanceFrom) && (deviceLong > targetLong - distanceFrom)) { 
+                        document.location.href = 'pages/player.html';
                         }
 }   
 
@@ -85,7 +72,7 @@ var onMapWatchSuccess = function (position) {
     if (updatedLatitude != deviceLat && updatedLongitude != deviceLong) {
 
         deviceLat = updatedLatitude;
-        deviceLong= updatedLongitude;
+        deviceLong = updatedLongitude;
 
         getMap(updatedLatitude, updatedLongitude);
     }
@@ -103,9 +90,9 @@ function onMapError(error) {
 }
 
 function watchMapPosition() {
-
     return navigator.geolocation.watchPosition(onMapWatchSuccess, onMapError, { enableHighAccuracy: true });
 }
+
 
 
 
