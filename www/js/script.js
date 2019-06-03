@@ -4,6 +4,11 @@ var deviceLat;
 var deviceLong;
 var distanceFrom = 0.00025;
 var marker = 0;
+var zValue;
+var dirRange = 11.25;
+var currentIcon = 'http://earth.google.com/images/kml-icons/track-directional/track-0.png';
+
+var iconBase = 'http://earth.google.com/images/kml-icons/track-directional/';
 
 var geoOpt = { 
     maximumAge: 1000,
@@ -26,7 +31,8 @@ function onSuccess(position) {
                         'Altitude: '           + position.coords.altitude    + '<br / >' +
                         'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
                         'Target Latitude: '    + targetLat                  + '<br / >' +
-                        'Target Longitude: '   + targetLong                 + '<br / >' ;
+                        'Target Longitude: '   + targetLong                 + '<br / >' +
+                        'Direction: '          + position.coords.heading    + '<br / >';
     
                         deviceLat = position.coords.latitude;
                         deviceLong = position.coords.longitude;
@@ -48,8 +54,7 @@ function getMap(deviceLat,deviceLong) {
     var tlatLong = new google.maps.LatLng(targetLat, targetLong);
 
     marker = new google.maps.Marker({
-        position: latLong,
-        icon: 'http://earth.google.com/images/kml-icons/track-directional/track-0.png'
+        position: latLong
     });
     
     var targetMarker = new google.maps.Marker({
@@ -71,16 +76,19 @@ var onMapWatchSuccess = function (position) {
                         'Altitude: '           + position.coords.altitude    + '<br / >' +
                         'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
                         'Target Latitude: '    + targetLat                  + '<br / >' +
-                        'Target Longitude: '   + targetLong                 + '<br / >' ;
+                        'Target Longitude: '   + targetLong                 + '<br / >' +
+                        'Direction: '          + position.coords.heading    + '<br / >';
     
     
     var updatedLatitude = position.coords.latitude;
     var updatedLongitude = position.coords.longitude;
     deviceLat = updatedLatitude;
     deviceLong = updatedLongitude;
+    zValue = position.coords.heading;
     var latLong = new google.maps.LatLng(updatedLatitude, updatedLongitude);
     marker.setPosition(latLong);
-    
+    changeIcon(zValue);
+    marker.setIcon(currentIcon);
     var upperBoundLat = targetLat + distanceFrom;
     var lowerBoundLat = targetLat - distanceFrom;
     var upperBoundLong = targetLong + distanceFrom;

@@ -10,4 +10,9 @@
     <content src="index.html" />
     <access Access-Control-Allow-Origin="*"/>
     <access origin="*" />
+    
+    <feature name="Accelerometer">
+    <param name="android-package" value="org.apache.cordova.devicemotion.AccelListener" />
+    <param name="ios-package" value="CDVAccelerometer" />
+    </feature>
 </widget>
