@@ -2,7 +2,7 @@ var targetLat = 49.695491;
 var targetLong = -112.897221;
 var deviceLat;
 var deviceLong;
-var distanceFrom = 0.00025;
+var distanceFrom = 0.0003;
 var marker = 0;
 var zValue;
 var dirRange = 11.25;
@@ -11,7 +11,7 @@ var currentIcon = 'http://earth.google.com/images/kml-icons/track-directional/tr
 var iconBase = 'http://earth.google.com/images/kml-icons/track-directional/';
 
 var geoOpt = { 
-    maximumAge: 1000,
+    maximumAge: 500,
     timeout: 5000,
     enableHighAccuracy: true
 }
@@ -82,19 +82,21 @@ var onMapWatchSuccess = function (position) {
     
     var updatedLatitude = position.coords.latitude;
     var updatedLongitude = position.coords.longitude;
+    
     deviceLat = updatedLatitude;
     deviceLong = updatedLongitude;
+    
     zValue = position.coords.heading;
+    
     var latLong = new google.maps.LatLng(updatedLatitude, updatedLongitude);
     marker.setPosition(latLong);
-    changeIcon(zValue);
-    marker.setIcon(currentIcon);
+    
     var upperBoundLat = targetLat + distanceFrom;
     var lowerBoundLat = targetLat - distanceFrom;
     var upperBoundLong = targetLong + distanceFrom;
     var lowerBoundLong = targetLong - distanceFrom;
     
-    if ((deviceLat > lowerBoundLat) && (deviceLat < upperBoundLat) && (deviceLong > lowerBoundLong) && (deviceLong < upperBoundLong)) { 
+    if ((deviceLat >= lowerBoundLat) && (deviceLat <= upperBoundLat) && (deviceLong >= lowerBoundLong) && (deviceLong <= upperBoundLong)) { 
     location.href = 'pages/player.html'
     } 
 }
