@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Geolocation- Jackson</name>
+<widget id="com.mwblair.Blackfoot_Geolocation" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Blackfoot Geolocation</name>
     <description>
-        A blank PhoneGap app.
+        Historical Blackfoot sites
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="Blair.W.Matthew@gmail.com" href="http://www.meblair.com">
+        Matthew Blair
     </author>
     <content src="index.html" />
     <access Access-Control-Allow-Origin="*" />

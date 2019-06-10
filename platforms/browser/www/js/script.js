@@ -1,15 +1,13 @@
-var targetLat = 49.695491;
-var targetLong = -112.897221;
 var deviceLat;
 var deviceLong;
 var distanceFrom = 0.0003;
 var marker = 0;
-var zValue;
-var dirRange = 11.25;
-var currentIcon = 'http://earth.google.com/images/kml-icons/track-directional/track-0.png';
 
-var iconBase = 'http://earth.google.com/images/kml-icons/track-directional/';
+// ----------------------------------All target locations----------------------------------------
+var research = {latitude:49.67771, longitude:-112.85961};
+var uhall = {latitude:49.677897,longitude:-112.859061};
 
+//-----------------------------------End of target locations--------------------------------------
 var geoOpt = { 
     maximumAge: 500,
     timeout: 5000,
@@ -30,13 +28,12 @@ function onSuccess(position) {
                         'Longitude: '          + position.coords.longitude   + '<br / >' +
                         'Altitude: '           + position.coords.altitude    + '<br / >' +
                         'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
-                        'Target Latitude: '    + targetLat                  + '<br / >' +
-                        'Target Longitude: '   + targetLong                 + '<br / >' +
                         'Direction: '          + position.coords.heading    + '<br / >';
     
                         deviceLat = position.coords.latitude;
                         deviceLong = position.coords.longitude;
                         getMap(deviceLat,deviceLong);
+                        
 }  
 
 function getMap(deviceLat,deviceLong) { 
@@ -51,19 +48,26 @@ function getMap(deviceLat,deviceLong) {
 
 
     var latLong = new google.maps.LatLng(deviceLat, deviceLong);
-    var tlatLong = new google.maps.LatLng(targetLat, targetLong);
+    var target1 = new google.maps.LatLng(research.latitude, research.longitude);
+    var target2 = new google.maps.LatLng(uhall.latitude, uhall.longitude);
 
     marker = new google.maps.Marker({
         position: latLong
     });
     
-    var targetMarker = new google.maps.Marker({
-    position: tlatLong,
+    var target1Marker = new google.maps.Marker({
+    position: target1,
+    title:"Reach this Point"
+    });
+    
+    var target2Marker = new google.maps.Marker({
+    position: target2,
     title:"Reach this Point"
     });
 
     marker.setMap(map);
-    targetMarker.setMap(map);
+    target1Marker.setMap(map);
+    target2Marker.setMap(map);
     map.setZoom(16.5);
     map.setCenter(marker.getPosition());
     
@@ -75,8 +79,6 @@ var onMapWatchSuccess = function (position) {
                         'Longitude: '          + position.coords.longitude   + '<br / >' +
                         'Altitude: '           + position.coords.altitude    + '<br / >' +
                         'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
-                        'Target Latitude: '    + targetLat                  + '<br / >' +
-                        'Target Longitude: '   + targetLong                 + '<br / >' +
                         'Direction: '          + position.coords.heading    + '<br / >';
     
     
@@ -91,14 +93,26 @@ var onMapWatchSuccess = function (position) {
     var latLong = new google.maps.LatLng(updatedLatitude, updatedLongitude);
     marker.setPosition(latLong);
     
-    var upperBoundLat = targetLat + distanceFrom;
-    var lowerBoundLat = targetLat - distanceFrom;
-    var upperBoundLong = targetLong + distanceFrom;
-    var lowerBoundLong = targetLong - distanceFrom;
+    t1UpLat = research.latitude + distanceFrom;
+    t1LoLat = research.latitude - distanceFrom;
+    t1UpLng = research.longitude + distanceFrom;
+    t1LoLng = research.longitude - distanceFrom;
     
-    if ((deviceLat >= lowerBoundLat) && (deviceLat <= upperBoundLat) && (deviceLong >= lowerBoundLong) && (deviceLong <= upperBoundLong)) { 
-    location.href = 'pages/player.html'
-    } 
+    t2UpLat = uhall.latitude + distanceFrom;
+    t2LoLat = uhall.latitude - distanceFrom;
+    t2UpLng = uhall.longitude + distanceFrom;
+    t2LoLng = uhall.longitude - distanceFrom;
+    
+    if (deviceLat <= t1UpLat && deviceLat >= t1LoLat && deviceLong <= t1UpLng && deviceLong >= t1LoLng) {
+    localStorage.clear();
+    localStorage.setItem("videoID",'fnHQZJcBy9Q');
+    location.href = 'pages/player.html';
+    }
+    if (deviceLat <= t2UpLat && deviceLat >= t2LoLat && deviceLong <= t2UpLng && deviceLong >= t2LoLng) {
+    localStorage.clear();
+    localStorage.setItem("videoID",'sQwMI4hkIPs');
+    location.href = 'pages/player.html';
+    }
 }
 
 // Error Checking
@@ -115,7 +129,6 @@ function onMapError(error) {
 function watchMapPosition() {
     return navigator.geolocation.watchPosition(onMapWatchSuccess, onMapError, { enableHighAccuracy: true });
 }
-
 
 
 

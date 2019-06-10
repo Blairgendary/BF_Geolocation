@@ -11,9 +11,5 @@
             "PACKAGE_NAME": "com.mwblair.Blackfoot_Geolocation"
         }
     },
-    "dependent_plugins": {},
-    "modules": [],
-    "plugin_metadata": {
-        "cordova-plugin-geolocation": "4.0.1"
-    }
+    "dependent_plugins": {}
 }
