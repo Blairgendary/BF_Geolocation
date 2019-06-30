@@ -3,13 +3,14 @@ var deviceLong;
 var R = Math.pow(6367,3);
 var distanceFrom = 0.0003;
 var latLong;
+var APIKEY = 'AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY'; 
 var marker = 0;
 var targets = [];
 var targetsMarkers = [];
 var videoReady = false;
-var latUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!B2:B?key=APIKEYHERE";
-var lonUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!C2:C?key=APIKEYHERE";
-var vidUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!D2:D?key=APIKEYHERE";
+var latUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!B2:B?key=" + APIKEY;
+var lonUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!C2:C?key=" + APIKEY;
+var vidUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!D2:D?key=" + APIKEY;
 
 var latData;
 var lonData;
