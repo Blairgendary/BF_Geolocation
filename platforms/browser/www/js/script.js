@@ -1,15 +1,15 @@
 var deviceLat;
 var deviceLong;
-var R = Math.pow(6367,3);
-var distanceFrom = 0.0003;
+var R = 6371000;
+var triggerDistance = 15;
 var latLong;
+var APIKEY = ''; 
 var marker = 0;
 var targets = [];
 var targetsMarkers = [];
-var videoReady = false;
-var latUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!B2:B?key=AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY";
-var lonUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!C2:C?key=AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY";
-var vidUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!D2:D?key=AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY";
+var latUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!B2:B?key="+APIKEY;
+var lonUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!C2:C?key="+APIKEY;
+var vidUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!D2:D?key="+APIKEY;
 
 var latData;
 var lonData;
@@ -18,6 +18,10 @@ var vidData;
 var latitudes = [];
 var longitudes = [];
 var videoUrls = [];
+
+var distances = [];
+var closest;
+
 
 // ----------------------------------RETRIEVE ALL LATITUDES---------------------------------------- 
 var xhr = new XMLHttpRequest();
@@ -62,11 +66,6 @@ xhr3.onreadystatechange = function() {
 xhr3.open('GET', vidUrl);
 xhr3.send();
 
-// ----------------------------------All target locations----------------------------------------
-var research = {latitude:49.67771, longitude:-112.85961};
-var uhall = {latitude:49.677897,longitude:-112.859061};
-
-//-----------------------------------End of target locations--------------------------------------
 var geoOpt = { 
     maximumAge: 500,
     timeout: 5000,
@@ -90,7 +89,6 @@ function onDeviceReady() {
     navigator.geolocation.watchPosition(onMapWatchSuccess, onMapError, geoOpt);
 }
 
-
 function onSuccess(position) { 
     var element = document.getElementById('geolocation');
     element.innerHTML = 'Latitude: '           + position.coords.latitude    + '<br / >' + 
@@ -102,10 +100,10 @@ function onSuccess(position) {
                         deviceLat = position.coords.latitude;
                         deviceLong = position.coords.longitude;
                         //research.latitude = deviceLat;
-                        //research.longitude = deviceLong;
+                        //research.longitude = deviceLong; 
                         getMap(deviceLat,deviceLong);
                         
-}  
+} 
 
 function getMap(deviceLat,deviceLong) { 
     
@@ -139,6 +137,7 @@ function getMap(deviceLat,deviceLong) {
     marker.setMap(map);
     map.setZoom(16.5);
     map.setCenter(marker.getPosition());
+    $('#landing').hide();
 }
 
 var onMapWatchSuccess = function (position) {
@@ -161,12 +160,29 @@ var onMapWatchSuccess = function (position) {
     var latLong = new google.maps.LatLng(updatedLatitude, updatedLongitude);
     marker.setPosition(latLong);
     
-    var dlat = Math.radians(latitudes[0] - deviceLat);
-    var dlon = Math.radians(longitudes[0] - deviceLong);
-    var a = Math.sin(dlat/2) * Math.sin(dlat/2) + Math.radians(Math.cos(deviceLat)) * Math.radians(Math.cos(latitudes[0])) * Math.sin(dlon/2) * Math.sin(dlon/2);
+    // haverSine formula for finding distances between the user and the targets
+    for(var i=0;i<latitudes.length;i++) {
+    var Lat1 = Math.radians(deviceLat);
+    var Lat2 = Math.radians(latitudes[i]);
+    var cLat = Math.radians(latitudes[i] - deviceLat);
+    var cLon = Math.radians(longitudes[i] - deviceLong);
+    
+    var a = Math.sin(cLat/2) * Math.sin(cLat/2) + Math.cos(Lat1) * Math.cos(Lat2) * Math.sin(cLon/2) * Math.sin(cLon/2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
-    console.log(d);
+    distances[i] = d.toFixed(2);
+    }
+    
+    closest = Math.min(...distances);
+    console.log(closest);
+    if (closest <= triggerDistance) { 
+    $.each(distances, function(index){
+    if (closest ==  distances[index]) { 
+    localStorage.setItem("videoID", videoUrls[index]);
+    location.href("pages/player.html");
+        }   
+    });
+    }
 }
 
 // Error Checking
@@ -183,6 +199,7 @@ function onMapError(error) {
 function watchMapPosition() {
     return navigator.geolocation.watchPosition(onMapWatchSuccess, onMapError, { enableHighAccuracy: true });
 }
+
 
 
 

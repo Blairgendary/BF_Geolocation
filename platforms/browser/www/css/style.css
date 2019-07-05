@@ -9,18 +9,39 @@ max-width: 100vw;
 position: fixed;
 }
 
-#map-container { 
-width: 350px;
-height: 350px;
+#landing { 
 position: absolute;
+width: 100vw;
+height: 100vh;
+z-index: 10;
+background-color: aquamarine;
+}
+
+#loading { 
+width: 20vw;
+height: 20vw;
+margin-left: 40vw;
+margin-top: 70vw;
+background-image: url(../imgs/loading_circles.png);
+z-index: 20;
+animation-duration: 3s;
+animation-name: spin;
+animation-timing-function: linear;
+animation-iteration-count: infinite;
+}
+#map-container { 
+width: 100vw;
+height: 100vw;
+position: fixed;
+z-index: 0;
 }
 #map-hide {
-    position: absolute;
-    z-index: -1;
+    position: fixed;
 }
 #map {
 width: 100%;
 height: 100%;
+z-index: 0;
 } 
 
 #videoButton { 
@@ -33,9 +54,19 @@ text-align: center;
 margin-left: 30vw;
 margin-top: 5vh;
 color: white; 
+z-index: 0;
 }
 
 #player { 
 width: 100vw;
 height: 100vh;
+}
+
+@keyframes spin { 
+    from { 
+    transform: rotate(0deg);
+    }
+    to { 
+    transform: rotate(360deg);
+    }
 }
