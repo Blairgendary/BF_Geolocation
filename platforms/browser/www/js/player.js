@@ -1,9 +1,13 @@
     let player;
     let panStarted = false;
+    console.log("Local Storage: " + localStorage.getItem("videoID"));
+    var videoID = localStorage.getItem("videoID");
+
+    onYouTubeIframeAPIReady();
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
-            videoId: localStorage.getItem("videoID"),
+            videoId: videoID,
             events: {
                 'onStateChange': onPlayerStateChange
             }

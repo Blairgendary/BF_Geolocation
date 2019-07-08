@@ -3,7 +3,7 @@ var deviceLong;
 var R = 6371000;
 var triggerDistance = 15;
 var latLong;
-var APIKEY = ''; 
+var APIKEY = 'AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY'; 
 var marker = 0;
 var targets = [];
 var targetsMarkers = [];
@@ -137,7 +137,6 @@ function getMap(deviceLat,deviceLong) {
     marker.setMap(map);
     map.setZoom(16.5);
     map.setCenter(marker.getPosition());
-    $('#landing').hide();
 }
 
 var onMapWatchSuccess = function (position) {
@@ -170,18 +169,22 @@ var onMapWatchSuccess = function (position) {
     var a = Math.sin(cLat/2) * Math.sin(cLat/2) + Math.cos(Lat1) * Math.cos(Lat2) * Math.sin(cLon/2) * Math.sin(cLon/2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
-    distances[i] = d.toFixed(2);
+    distances[i] = Math.round(d);
+    //console.log("distances: " + i + " " + distances[i]);
     }
     
-    closest = Math.min(...distances);
+    closest = Math.min.apply(null, distances);
     console.log(closest);
     if (closest <= triggerDistance) { 
-    $.each(distances, function(index){
-    if (closest ==  distances[index]) { 
-    localStorage.setItem("videoID", videoUrls[index]);
-    location.href("pages/player.html");
-        }   
-    });
+        console.log("trigger");
+        for(i=0;i<distances.length; i++) { 
+        if (closest == distances[i]) { 
+            localStorage.setItem("videoID", videoUrls[i]);
+            if (vidURL == videoUrls[i]) { 
+            location.href = "pages/player.html"; 
+                }
+            }
+        }
     }
 }
 
