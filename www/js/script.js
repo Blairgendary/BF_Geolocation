@@ -3,7 +3,7 @@ var deviceLong;
 var R = 6371000;
 var triggerDistance = 15;
 var latLong;
-var APIKEY = 'AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY'; 
+var APIKEY = 'Api'; 
 var marker = 0;
 var targets = [];
 var targetsMarkers = [];
@@ -21,6 +21,9 @@ var videoUrls = [];
 
 var distances = [];
 var closest;
+
+var loaded = false;
+
 
 
 // ----------------------------------RETRIEVE ALL LATITUDES---------------------------------------- 
@@ -176,15 +179,16 @@ var onMapWatchSuccess = function (position) {
     closest = Math.min.apply(null, distances);
     console.log(closest);
     if (closest <= triggerDistance) { 
-        console.log("trigger");
         for(i=0;i<distances.length; i++) { 
         if (closest == distances[i]) { 
             localStorage.setItem("videoID", videoUrls[i]);
-            if (vidURL == videoUrls[i]) { 
-            location.href = "pages/player.html"; 
-                }
+            window.location.href = "pages/player.html"; 
             }
         }
+    }
+    if (loaded == false) { 
+        $('#landing').hide();
+        loaded = true;
     }
 }
 

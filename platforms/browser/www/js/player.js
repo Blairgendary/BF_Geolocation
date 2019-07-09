@@ -1,7 +1,15 @@
     let player;
     let panStarted = false;
+
     console.log("Local Storage: " + localStorage.getItem("videoID"));
     var videoID = localStorage.getItem("videoID");
+
+    $('.button').on('click', function() {
+    $('#content').animate({
+        bottom: 'toggle',
+        opacity: 'toggle'
+        });
+    });
 
     onYouTubeIframeAPIReady();
 
