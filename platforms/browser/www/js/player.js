@@ -1,9 +1,11 @@
     let player;
     let panStarted = false;
-
+    
+    
+    
     console.log("Local Storage: " + localStorage.getItem("videoID"));
     var videoID = localStorage.getItem("videoID");
-
+    
     $('.button').on('click', function() {
     $('#content').animate({
         bottom: 'toggle',
@@ -11,6 +13,11 @@
         });
     });
 
+    $('.backButton').on('click', function() {
+    window.location.href = "../index.html";
+    });
+    
+    
     onYouTubeIframeAPIReady();
 
     function onYouTubeIframeAPIReady() {

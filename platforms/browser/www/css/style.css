@@ -1,3 +1,8 @@
+@font-face { 
+font-family: JoseSans;
+src: url(../fonts/JosefinSans-Regular.ttf);
+}
+
 * { 
 box-sizing: border-box;
 margin: 0;
@@ -16,7 +21,42 @@ position: absolute;
 width: 100vw;
 height: 100vh;
 z-index: 10;
-background-color: aquamarine;
+background-color: #A3212D;
+}
+
+#appInfo { 
+font-family: JoseSans;
+font-size: 1.15em;
+position: absolute;
+top: 55vh;
+padding: 4vw;
+/*color: #A3212D;*/
+color: #F0C800;
+}
+
+#siteLeft {
+font-family: JoseSans;
+font-size: 1.15em;
+position: absolute;
+top: 35vh;
+/*color: #A3212D;*/
+color: #F0C800;
+}
+
+#okButton {
+font-family: JoseSans;
+font-size: 1.15em;
+position: absolute;
+top: 35vh;
+right: 5vw;
+color: #A3212D;
+background-color: #F0C800;
+padding: 5px;
+width: 18vw;
+border-radius: 3px;
+align-content: center;
+text-align: center;
+vertical-align: middle;
 }
 
 #loading { 
@@ -80,8 +120,18 @@ z-index: 20;
 .button h2 { 
 text-align: center;
 vertical-align: middle;
-width: 80%;
 color: white;
+font-size: 3em;
+}
+
+.backButton { 
+position: absolute;
+bottom: 40vh;
+left: 30vw; 
+width: 40vw; 
+height: 10vh; 
+z-index: 20; 
+background-color: cadetblue;
 }
 
 #content { 

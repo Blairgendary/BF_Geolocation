@@ -1,9 +1,11 @@
 var deviceLat;
 var deviceLong;
 var R = 6371000;
+
 var triggerDistance = 15;
+
 var latLong;
-var APIKEY = 'Api'; 
+var APIKEY = 'AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY'; 
 var marker = 0;
 var targets = [];
 var targetsMarkers = [];
@@ -23,8 +25,6 @@ var distances = [];
 var closest;
 
 var loaded = false;
-
-
 
 // ----------------------------------RETRIEVE ALL LATITUDES---------------------------------------- 
 var xhr = new XMLHttpRequest();
