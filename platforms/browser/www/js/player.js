@@ -5,19 +5,15 @@
     
     console.log("Local Storage: " + localStorage.getItem("videoID"));
     var videoID = localStorage.getItem("videoID");
+    var siteName = localStorage.getItem("siteName");
     
     $('.button').on('click', function() {
     $('#content').animate({
         bottom: 'toggle',
         opacity: 'toggle'
         });
-    });
-
-    $('.backButton').on('click', function() {
-    window.location.href = "../index.html";
-    });
-    
-    
+    }); 
+    $('#siteTitle').replaceWith(siteName);
     onYouTubeIframeAPIReady();
 
     function onYouTubeIframeAPIReady() {

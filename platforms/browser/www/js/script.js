@@ -12,14 +12,17 @@ var targetsMarkers = [];
 var latUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!B2:B?key="+APIKEY;
 var lonUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!C2:C?key="+APIKEY;
 var vidUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!D2:D?key="+APIKEY;
+var namUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!E2:E?key="+APIKEY;
 
 var latData;
 var lonData;
 var vidData;
+var namData;
 
 var latitudes = [];
 var longitudes = [];
 var videoUrls = [];
+var names = [];
 
 var distances = [];
 var closest;
@@ -30,6 +33,7 @@ var loaded = false;
 var xhr = new XMLHttpRequest();
 var xhr2 = new XMLHttpRequest();
 var xhr3 = new XMLHttpRequest();
+var xhr4 = new XMLHttpRequest();
 
 xhr.onreadystatechange = function() { 
     if (this.readyState == 4 & this.status == 200) {
@@ -68,6 +72,18 @@ xhr3.onreadystatechange = function() {
 };
 xhr3.open('GET', vidUrl);
 xhr3.send();
+
+xhr4.onreadystatechange = function() { 
+    if (this.readyState == 4 & this.status == 200) {
+        namData = jQuery.parseJSON(xhr4.responseText);
+        for(var i = 0; i < namData.values.length; i++) {
+        names[i] = namData.values[i];
+        console.log(names[i]);
+        }
+    }
+};
+xhr4.open('GET', namUrl);
+xhr4.send();
 
 var geoOpt = { 
     maximumAge: 500,
@@ -182,6 +198,7 @@ var onMapWatchSuccess = function (position) {
         for(i=0;i<distances.length; i++) { 
         if (closest == distances[i]) { 
             localStorage.setItem("videoID", videoUrls[i]);
+            localStorage.setItem("siteName", names[i]);
             window.location.href = "pages/player.html"; 
             }
         }
