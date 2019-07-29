@@ -1,6 +1,17 @@
+localStorage.clear(); 
 var deviceLat;
 var deviceLong;
 var R = 6371000;
+
+var image = {
+          url: '../imgs/Char.png',
+          // This marker is 20 pixels wide by 32 pixels high.
+          size: new google.maps.Size(20, 33),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(10, 33)
+        };
 
 var triggerDistance = 15;
 
@@ -28,6 +39,18 @@ var distances = [];
 var closest;
 
 var loaded = false;
+var okay = false;
+
+$('#okButton').on('click', function() { 
+        if (loaded == false) { 
+            $('#loading').show();
+        }
+        if (loaded == true) {
+            $('#landing').hide();
+            okay = true;
+        }
+    });
+
 
 // ----------------------------------RETRIEVE ALL LATITUDES---------------------------------------- 
 var xhr = new XMLHttpRequest();
@@ -109,13 +132,6 @@ function onDeviceReady() {
 }
 
 function onSuccess(position) { 
-    var element = document.getElementById('geolocation');
-    element.innerHTML = 'Latitude: '           + position.coords.latitude    + '<br / >' + 
-                        'Longitude: '          + position.coords.longitude   + '<br / >' +
-                        'Altitude: '           + position.coords.altitude    + '<br / >' +
-                        'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
-                        'Direction: '          + position.coords.heading    + '<br / >';
-    
                         deviceLat = position.coords.latitude;
                         deviceLong = position.coords.longitude;
                         //research.latitude = deviceLat;
@@ -139,7 +155,8 @@ function getMap(deviceLat,deviceLong) {
     
     marker = new google.maps.Marker({
         position: latLong,
-        map: map
+        icon: image,
+        map: map 
     });
     
     for(var i = 0; i < latitudes.length; i++) { 
@@ -159,14 +176,6 @@ function getMap(deviceLat,deviceLong) {
 }
 
 var onMapWatchSuccess = function (position) {
-    var element = document.getElementById('geolocation');
-    element.innerHTML = 'Latitude: '           + position.coords.latitude    + '<br / >' + 
-                        'Longitude: '          + position.coords.longitude   + '<br / >' +
-                        'Altitude: '           + position.coords.altitude    + '<br / >' +
-                        'Accuracy: '           + position.coords.accuracy    + '<br / >' + 
-                        'Direction: '          + position.coords.heading    + '<br / >';
-    
-    
     var updatedLatitude = position.coords.latitude;
     var updatedLongitude = position.coords.longitude;
     
@@ -194,19 +203,20 @@ var onMapWatchSuccess = function (position) {
     
     closest = Math.min.apply(null, distances);
     console.log(closest);
+    $('#nearest').text("~Distance to nearest site: " + closest + "m");
     if (closest <= triggerDistance) { 
         for(i=0;i<distances.length; i++) { 
-        if (closest == distances[i]) { 
+        if (closest == distances[i]) {
+            if (okay == true) {
             localStorage.setItem("videoID", videoUrls[i]);
             localStorage.setItem("siteName", names[i]);
-            window.location.href = "pages/player.html"; 
+            window.location.href = "pages/player.html";
+            }
             }
         }
     }
-    if (loaded == false) { 
-        $('#landing').hide();
-        loaded = true;
-    }
+    loaded = true;
+    $('#loading').hide();
 }
 
 // Error Checking

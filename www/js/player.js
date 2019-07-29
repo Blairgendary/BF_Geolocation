@@ -13,6 +13,11 @@
         opacity: 'toggle'
         });
     }); 
+
+    $('.backButton').on('click', function() {
+    location.href = '../index.html'
+    }); 
+
     $('#siteTitle').replaceWith(siteName);
     onYouTubeIframeAPIReady();
 

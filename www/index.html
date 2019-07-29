@@ -8,6 +8,7 @@
     <body>
 
         <div id='landing'>
+            <section id="front-logo"></section>
             <div id='loading'>^</div>
             <div id="appInfo">
                 <p id="use">This app offers a 360 augmented reality experience of sites significant to Indigenous life, culture and learning. To view a video, walk toward a geolocation marker until the video overlay loads. Minimize the overlay and push play. When you are finished watching, leave the site, maximize the overlay and tap the "back to map" icon.</p>
@@ -15,14 +16,16 @@
                 <p id="okButton">Ok</p>
             </div>
         </div>
-
-        <p id='geolocation'>finding geoloc...</p>
-        <div id='map-container'>
-            <div id='map'></div>
+        <div id="background">
+            <div id="mapmask"></div>
+            <div id='map-container'>
+                <div id='map'></div>
+            </div>
+            <p id="nearest"></p>
         </div>
         
         <p id='result'></p>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=APIKEYHERE"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src='js/jquery.min.js'></script>
         <script type="text/javascript" src="js/script.js"></script>
