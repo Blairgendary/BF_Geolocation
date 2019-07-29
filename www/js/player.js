@@ -6,6 +6,7 @@
     console.log("Local Storage: " + localStorage.getItem("videoID"));
     var videoID = localStorage.getItem("videoID");
     var siteName = localStorage.getItem("siteName");
+    var siteDesc = localStorage.getItem("siteDesc");
     
     $('.button').on('click', function() {
     $('#content').animate({
@@ -19,6 +20,7 @@
     }); 
 
     $('#siteTitle').replaceWith(siteName);
+    $('#siteInfo').replaceWith(siteDesc);
     onYouTubeIframeAPIReady();
 
     function onYouTubeIframeAPIReady() {

@@ -3,20 +3,10 @@ var deviceLat;
 var deviceLong;
 var R = 6371000;
 
-var image = {
-          url: '../imgs/Char.png',
-          // This marker is 20 pixels wide by 32 pixels high.
-          size: new google.maps.Size(20, 33),
-          // The origin for this image is (0, 0).
-          origin: new google.maps.Point(0, 0),
-          // The anchor for this image is the base of the flagpole at (0, 32).
-          anchor: new google.maps.Point(10, 33)
-        };
-
 var triggerDistance = 15;
 
 var latLong;
-var APIKEY = 'AIzaSyBc9ttoVtKdarz1FQ8KgnGjhlVmSLx5GSY'; 
+var APIKEY = 'APIHERE'; 
 var marker = 0;
 var targets = [];
 var targetsMarkers = [];
@@ -24,16 +14,19 @@ var latUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cme
 var lonUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!C2:C?key="+APIKEY;
 var vidUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!D2:D?key="+APIKEY;
 var namUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!E2:E?key="+APIKEY;
+var descUrl = "https://sheets.googleapis.com/v4/spreadsheets/1KhDmsypOJHUxTTQ7cmeX9H8IuLs7eccFxa2HYuG8wBo/values/Loc!F2:F?key="+APIKEY;
 
 var latData;
 var lonData;
 var vidData;
 var namData;
+var descData;
 
 var latitudes = [];
 var longitudes = [];
 var videoUrls = [];
 var names = [];
+var descs = [];
 
 var distances = [];
 var closest;
@@ -52,12 +45,13 @@ $('#okButton').on('click', function() {
     });
 
 
-// ----------------------------------RETRIEVE ALL LATITUDES---------------------------------------- 
 var xhr = new XMLHttpRequest();
 var xhr2 = new XMLHttpRequest();
 var xhr3 = new XMLHttpRequest();
 var xhr4 = new XMLHttpRequest();
+var xhr5 = new XMLHttpRequest();
 
+// ----------------------------------RETRIEVE ALL LATITUDES---------------------------------------- 
 xhr.onreadystatechange = function() { 
     if (this.readyState == 4 & this.status == 200) {
         latData = jQuery.parseJSON(xhr.responseText);
@@ -96,6 +90,7 @@ xhr3.onreadystatechange = function() {
 xhr3.open('GET', vidUrl);
 xhr3.send();
 
+// ----------------------------------RETRIEVE SITE NAMES---------------------------------------------
 xhr4.onreadystatechange = function() { 
     if (this.readyState == 4 & this.status == 200) {
         namData = jQuery.parseJSON(xhr4.responseText);
@@ -107,6 +102,19 @@ xhr4.onreadystatechange = function() {
 };
 xhr4.open('GET', namUrl);
 xhr4.send();
+
+// ----------------------------------RETRIEVE SITE DESCS---------------------------------------------
+xhr5.onreadystatechange = function() { 
+    if (this.readyState == 4 & this.status == 200) {
+        descData = jQuery.parseJSON(xhr5.responseText);
+        for(var i = 0; i < descData.values.length; i++) {
+        descs[i] = parseFloat(descData.values[i]);
+        console.log(descs[i]);
+        }  
+    }
+};
+xhr5.open('GET', descUrl);
+xhr5.send();
 
 var geoOpt = { 
     maximumAge: 500,
@@ -155,8 +163,14 @@ function getMap(deviceLat,deviceLong) {
     
     marker = new google.maps.Marker({
         position: latLong,
-        icon: image,
-        map: map 
+        map: map,
+        title: 'This is you',
+        icon: {
+            url: "imgs/Char.png",
+            origin: new google.maps.Point(0,0),
+            scaledSize: new google.maps.Size(30,48),
+            anchor: new google.maps.Point(15, 48)
+        }
     });
     
     for(var i = 0; i < latitudes.length; i++) { 
@@ -166,7 +180,14 @@ function getMap(deviceLat,deviceLong) {
     for(var i = 0; i < latitudes.length; i++) { 
         targetsMarkers[i] = new google.maps.Marker({
         position: targets[i],
-        map: map
+        map: map,
+        title: names[i],
+        icon: {
+            url: "imgs/arrow.png",
+            origin: new google.maps.Point(0,0),
+            scaledSize: new google.maps.Size(30,48),
+            anchor: new google.maps.Point(15, 48)
+        }
         });
     }
 
@@ -210,6 +231,7 @@ var onMapWatchSuccess = function (position) {
             if (okay == true) {
             localStorage.setItem("videoID", videoUrls[i]);
             localStorage.setItem("siteName", names[i]);
+            localStorage.setItem("siteDesc", descs[i]);
             window.location.href = "pages/player.html";
             }
             }
@@ -233,8 +255,6 @@ function onMapError(error) {
 function watchMapPosition() {
     return navigator.geolocation.watchPosition(onMapWatchSuccess, onMapError, { enableHighAccuracy: true });
 }
-
-
 
 
 

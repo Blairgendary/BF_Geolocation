@@ -77,14 +77,16 @@ height: 100%;
 
 #loading {
 position: absolute;
-top: 25vw;
-width: 20vw;
-height: 20vw;
-margin-left: 40vw;
+background-size: contain;
+background-repeat: no-repeat;
+top: -8vw;
+width: 70vw;
+height: 100%;
+margin-left: 15vw;
 z-index: 20;
 font-size: 3em;
 color: white;
-animation-duration: 3s;
+animation-duration: 1s;
 animation-name: spin;
 animation-timing-function: linear;
 animation-iteration-count: infinite;
@@ -169,6 +171,7 @@ text-align: center;
 vertical-align: middle;
 color: white;
 font-size: 3em;
+transform: scale(2,1);
 }
 
 .backButton { 
@@ -182,6 +185,7 @@ background-color: cadetblue;
 }
 
 #content { 
+font-family: JoseSans;
 position: absolute;
 width: 100vw;
 height: 90vh;
@@ -199,11 +203,16 @@ font-size: 1.5em;
 
 
 @keyframes spin { 
-    from { 
-    transform: rotate(0deg);
-    }
-    to { 
-    transform: rotate(360deg);
-    }
+    0% {background-image: url(../imgs/loading/buffalo_01.png);}
+    10% {background-image: url(../imgs/loading/buffalo_02.png);}
+    20% {background-image: url(../imgs/loading/buffalo_03.png);}
+    30% {background-image: url(../imgs/loading/buffalo_04.png);}
+    40% {background-image: url(../imgs/loading/buffalo_05.png);}
+    50% {background-image: url(../imgs/loading/buffalo_06.png);}
+    60% {background-image: url(../imgs/loading/buffalo_07.png);}
+    70% {background-image: url(../imgs/loading/buffalo_08.png);}
+    80% {background-image: url(../imgs/loading/buffalo_09.png);}
+    90% {background-image: url(../imgs/loading/buffalo_10.png);}
+    100% {background-image: url(../imgs/loading/buffalo_11.png);}
 }
 
