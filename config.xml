@@ -11,7 +11,7 @@
         Matthew Blair
     </author>
     <content src="index.html" />
-    
+    <preference name="orientation" value="portrait" />
     <plugin name="cordova-plugin-geolocation" spec="~4.0.1" />
     
     <access Access-Control-Allow-Origin="*"/>

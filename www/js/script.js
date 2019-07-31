@@ -31,7 +31,11 @@ var descs = [];
 var distances = [];
 var closest;
 
-var loaded = false;
+var creditsOpen = false;
+var loaded = false; 
+
+
+
 var okay = false;
 
 $('#okButton').on('click', function() { 
@@ -44,7 +48,10 @@ $('#okButton').on('click', function() {
         }
     });
 
-
+$('#infoButton').on('click', function()  {
+    location.href = 'pages/credits.html'
+});
+                    
 var xhr = new XMLHttpRequest();
 var xhr2 = new XMLHttpRequest();
 var xhr3 = new XMLHttpRequest();
@@ -142,8 +149,6 @@ function onDeviceReady() {
 function onSuccess(position) { 
                         deviceLat = position.coords.latitude;
                         deviceLong = position.coords.longitude;
-                        //research.latitude = deviceLat;
-                        //research.longitude = deviceLong; 
                         getMap(deviceLat,deviceLong);
                         
 } 
@@ -239,6 +244,8 @@ var onMapWatchSuccess = function (position) {
         }
     }
     loaded = true;
+    $('#okButton').show();
+    $('#siteLeft').show();
     $('#loading').hide();
 }
 

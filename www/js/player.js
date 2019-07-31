@@ -19,8 +19,8 @@
     location.href = '../index.html'
     }); 
 
-    $('#siteTitle').replaceWith(siteName);
-    $('#siteInfo').replaceWith(siteDesc);
+    $('#siteTitle').text(siteName);
+    $('#siteInfo').text(siteDesc);
     onYouTubeIframeAPIReady();
 
     function onYouTubeIframeAPIReady() {
