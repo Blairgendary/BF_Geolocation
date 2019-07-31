@@ -1,4 +1,4 @@
-localStorage.clear(); 
+localStorage.clear();
 var deviceLat;
 var deviceLong;
 var R = 6371000;
@@ -6,7 +6,7 @@ var R = 6371000;
 var triggerDistance = 15;
 
 var latLong;
-var APIKEY = 'APIHERE'; 
+var APIKEY = 'API'; 
 var marker = 0;
 var targets = [];
 var targetsMarkers = [];
@@ -108,8 +108,8 @@ xhr5.onreadystatechange = function() {
     if (this.readyState == 4 & this.status == 200) {
         descData = jQuery.parseJSON(xhr5.responseText);
         for(var i = 0; i < descData.values.length; i++) {
-        descs[i] = parseFloat(descData.values[i]);
-        console.log(descs[i]);
+        descs[i] = descData.values[i];
+        console.log("Description: " + descs[i]);
         }  
     }
 };
@@ -232,6 +232,7 @@ var onMapWatchSuccess = function (position) {
             localStorage.setItem("videoID", videoUrls[i]);
             localStorage.setItem("siteName", names[i]);
             localStorage.setItem("siteDesc", descs[i]);
+                
             window.location.href = "pages/player.html";
             }
             }
