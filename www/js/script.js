@@ -190,8 +190,8 @@ function getMap(deviceLat,deviceLong) {
         icon: {
             url: "imgs/arrow.png",
             origin: new google.maps.Point(0,0),
-            scaledSize: new google.maps.Size(30,48),
-            anchor: new google.maps.Point(15, 48)
+            scaledSize: new google.maps.Size(22,38),
+            anchor: new google.maps.Point(11, 38)
         }
         });
     }
